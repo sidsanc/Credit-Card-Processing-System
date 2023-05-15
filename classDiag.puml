@@ -1,0 +1,85 @@
+@startuml
+
+class CreditCardClient {
+    +main(String[]): void
+    +getFileType(String): String
+}
+
+interface IReaderStrategy {
+    +readFile(String): List<CreditCardEntry>
+}
+
+interface IWriterStrategy {
+    +writeToFile(List<OutputData>, String): void
+}
+
+class CSVReader {
+    +CSVReader(File)
+    +readFile(String): List<CreditCardEntry>
+}
+
+class JSONReader {
+    +JSONReader(File)
+    +readFile(String): List<CreditCardEntry>
+}
+
+class XMLReader {
+    +XMLReader(File)
+    +readFile(String): List<CreditCardEntry>
+}
+
+class CSVWriter {
+    +writeToFile(List<OutputData>, String): void
+}
+
+class JSONWriter {
+    +writeToFile(List<OutputData>, String): void
+}
+
+class XMLWriter {
+    +writeToFile(List<OutputData>, String): void
+}
+
+class CreditCardEntry {
+    -cardNumber: String
+    -type: String
+    +CreditCardEntry(String, String)
+    +getCardNumber(): String
+    +getType(): String
+}
+
+class OutputData {
+    -cardNumber: String
+    -type: String
+    +OutputData(String, String)
+    +getCardNumber(): String
+    +getType(): String
+}
+
+class CreditCardFactory {
+    +createCreditCard(CreditCardEntry): CreditCardEntry
+}
+
+CreditCardClient --> IReaderStrategy
+CreditCardClient --> IWriterStrategy
+CreditCardClient --> CreditCardEntry
+CreditCardClient --> OutputData
+CreditCardClient --> CSVReader
+CreditCardClient --> JSONReader
+CreditCardClient --> XMLReader
+CreditCardClient --> CSVWriter
+CreditCardClient --> JSONWriter
+CreditCardClient --> XMLWriter
+CreditCardClient --> CreditCardFactory
+
+CSVReader --> IReaderStrategy
+JSONReader --> IReaderStrategy
+XMLReader --> IReaderStrategy
+CSVWriter --> IWriterStrategy
+JSONWriter --> IWriterStrategy
+XMLWriter --> IWriterStrategy
+
+CreditCardEntry --> CreditCardFactory
+OutputData --> CreditCardEntry
+
+@enduml
